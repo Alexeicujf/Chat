@@ -1,0 +1,4 @@
+{
+  "apps/front/src/**/*.{ts,tsx}": "npm --prefix apps/front run lint",
+  "apps/back/src/**/*.ts": "npx --prefix apps/back eslint"
+}
