@@ -5,6 +5,8 @@ services:
     image: postgres:16-alpine
     container_name: chat-postgres
     restart: always
+    env_file:
+      - ./apps/back/.env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -20,6 +22,8 @@ services:
       dockerfile: ./apps/back/Dockerfile
     container_name: chat-backend
     restart: always
+    env_file:
+      - ./apps/back/.env
     ports:
       - '${BACKEND_PORT}:${BACKEND_PORT}'
     environment:
@@ -33,6 +37,8 @@ services:
       dockerfile: ./apps/front/Dockerfile
     container_name: chat-frontend
     restart: always
+    env_file:
+      - ./apps/back/.env
     ports:
       - '${FRONTEND_PORT}:${FRONTEND_PORT}'
     depends_on:

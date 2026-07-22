@@ -7,8 +7,6 @@ dist-ssr/
 .eslintcache
 
 .env
-*.env
-.env.*
 **/generated/prisma/
 
 *.log
