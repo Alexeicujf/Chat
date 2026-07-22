@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: chat-postgres
+    restart: always
+    env_file:
+      - ./apps/back/.env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./apps/back/Dockerfile
+    container_name: chat-backend
+    restart: always
+    env_file:
+      - ./apps/back/.env
+    ports:
+      - '${BACKEND_PORT}:${BACKEND_PORT}'
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./apps/front/Dockerfile
+    container_name: chat-frontend
+    restart: always
+    env_file:
+      - ./apps/back/.env
+    ports:
+      - '${FRONTEND_PORT}:${FRONTEND_PORT}'
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
