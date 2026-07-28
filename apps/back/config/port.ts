@@ -8,7 +8,7 @@ export const config = {
   server: {
     port: process.env.BACKEND_PORT
       ? parseInt(process.env.BACKEND_PORT, 10)
-      : 3000,
+      : 8080,
   },
   db: {
     url: process.env.DATABASE_URL,
