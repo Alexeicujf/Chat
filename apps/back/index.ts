@@ -1,5 +1,5 @@
 import express from 'express';
-import { router } from './api/chat/index';
+import { router } from './models/chat/index';
 const app = express();
 const port = Number(process.env.PORT) || 3000;
 
