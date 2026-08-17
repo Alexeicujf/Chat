@@ -20,7 +20,7 @@ export const createUserController = async (req: Request, res: Response) => {
 };
 
 export const getUserController = async (req: Request, res: Response) => {
-	const { id } = req.params;
+	const { id } = req.query;
 	const userId = Number(id);
 	if (!id || isNaN(userId)) {
 		return res.status(400).json({ error: 'В запросе отсутствует ID' });
@@ -37,7 +37,7 @@ export const getUserController = async (req: Request, res: Response) => {
 };
 
 export const updateUserController = async (req: Request, res: Response) => {
-	const { id } = req.params;
+	const { id } = req.query;
 	const userId = Number(id);
 	const data = req.body;
 
@@ -50,7 +50,12 @@ export const updateUserController = async (req: Request, res: Response) => {
 	}
 
 	try {
-		const updateUser = await updateUserService(userId, data);
+		const updateUser = await updateUserService(
+			{
+				id: userId,
+			},
+			data,
+		);
 		res.status(200).json(updateUser);
 	} catch {
 		res.status(500).json({ error: 'Внешняя ошибка сервера при изменении параметров' });
@@ -58,14 +63,16 @@ export const updateUserController = async (req: Request, res: Response) => {
 };
 
 export const deleteUserController = async (req: Request, res: Response) => {
-	const { id } = req.params;
+	const { id } = req.query;
 	const userId = Number(id);
 
 	if (!id || isNaN(userId)) {
 		return res.status(400).json({ error: 'Ошибка удаления! Пользователь не найден' });
 	}
 	try {
-		const deleteUser = await deleteUserService(userId);
+		const deleteUser = await deleteUserService({
+			id: userId,
+		});
 		res.status(200).json(deleteUser);
 	} catch {
 		res.status(500).json({ error: 'Внешняя ошибка сервера' });

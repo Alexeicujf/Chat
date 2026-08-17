@@ -4,11 +4,13 @@ import {
 	getChatController,
 	updateChatController,
 	deleteChatController,
+	deleteChatsManyController,
 } from './chats.controller';
 
 export const router = Router();
 
 router.post('/', createChatController);
 router.get('/', getChatController);
-router.put('/:chatId', updateChatController);
-router.delete('/:chatId', deleteChatController);
+router.put('/', updateChatController);
+router.delete('/', deleteChatController);
+router.delete('/many', deleteChatsManyController);

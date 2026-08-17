@@ -7,37 +7,33 @@ export const createChatInDb = async (data: Prisma.ChatCreateInput) => {
 	});
 };
 
-export const getChatFromDb = async (userId: number, where?: Prisma.ChatWhereInput) => {
-	return prisma.chat.findMany({
-		where: {
-			AND: [
-				{
-					users: {
-						some: {
-							id: userId,
-						},
-					},
-				},
-				where || {},
-			],
-		},
-	});
+export const getChatFromDb = async (where: Prisma.ChatWhereInput) => {
+	return prisma.chat.findMany({ where });
 };
 
-export const updateChatIdDb = async (chatId: number, data: Prisma.ChatUpdateInput) => {
-	return prisma.chat.update({
-		where: {
-			id: chatId,
-		},
-		data: data,
-	});
+export const updateChatIdDb = async (
+	where: Prisma.ChatWhereUniqueInput,
+	data: Prisma.ChatUpdateInput,
+) => {
+	return prisma.chat.update({ where, data });
 };
 
-export const deleteChatIdDb = async (userId: number, chatId: number) => {
+export const deleteChatIdDb = async (where: Prisma.ChatWhereInput) => {
+	return prisma.chat.deleteMany({
+		where,
+	});
+};
+export const deleteChatsManyInDb = async (chatIds: number[], userId: number) => {
 	return prisma.chat.deleteMany({
 		where: {
-			id: chatId,
-			creatorId: userId,
+			id: {
+				in: chatIds,
+			},
+			users: {
+				some: {
+					id: userId,
+				},
+			},
 		},
 	});
 };

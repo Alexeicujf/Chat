@@ -7,25 +7,24 @@ export const createUserDb = async (data: Prisma.UserCreateInput) => {
 	});
 };
 
-export const getUserUniqueDb = async (where: Prisma.UserWhereUniqueInput) => {
-	return prisma.user.findUnique({
+export const getUserUniqueDb = async (where: Prisma.UserWhereInput) => {
+	return prisma.user.findMany({
 		where,
 	});
 };
 
-export const updateUserIdDb = async (userId: number, data: Prisma.UserUpdateInput) => {
-	return prisma.user.update({
-		where: {
-			id: userId,
-		},
-		data: data,
+export const updateUserIdDb = async (
+	where: Prisma.UserWhereUniqueInput,
+	data: Prisma.UserUpdateInput,
+) => {
+	return prisma.user.updateMany({
+		where,
+		data,
 	});
 };
 
-export const deleteUserIdDb = async (userId: number) => {
-	return prisma.user.delete({
-		where: {
-			id: userId,
-		},
+export const deleteUserIdDb = async (where: Prisma.UserWhereInput) => {
+	return prisma.user.deleteMany({
+		where,
 	});
 };

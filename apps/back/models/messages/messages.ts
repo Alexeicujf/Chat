@@ -2,7 +2,6 @@ import { Router } from 'express';
 import {
 	createMessageController,
 	getMessagesController,
-	getMessageController,
 	updateMessageController,
 	deleteMessageController,
 	deleteMessagesManyController,
@@ -11,8 +10,7 @@ import {
 export const router = Router();
 
 router.post('/', createMessageController);
-router.get('/chat/:chatId', getMessagesController);
-router.get('/single/:messageId', getMessageController);
-router.put('/:messageId', updateMessageController);
-router.delete('/:messageId', deleteMessageController);
+router.get('/', getMessagesController);
+router.put('/', updateMessageController);
+router.delete('/', deleteMessageController);
 router.delete('/many', deleteMessagesManyController);

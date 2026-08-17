@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { createMessagesService } from './message.service';
-import { getMessageService, getMessagesService } from './message.service';
+import { getMessagesService } from './message.service';
 import { updateMessageService } from './message.service';
 import { deleteMessageService, deleteMessagesServise } from './message.service';
 
@@ -16,25 +16,6 @@ export const createMessageController = async (req: Request, res: Response) => {
 		res.status(201).json(createMessage);
 	} catch {
 		res.status(500).json({ error: 'Ошибка запроса!' });
-	}
-};
-
-export const getMessageController = async (req: Request, res: Response) => {
-	const { messageId } = req.query;
-	const numberId = Number(messageId);
-	if (!messageId || isNaN(numberId)) {
-		return res.status(400).json({ error: 'Не сужествующий идентификатор сообщения' });
-	}
-
-	try {
-		const getMessage = await getMessageService({ id: numberId });
-
-		if (!getMessage) {
-			return res.status(404).json({ error: '404 Not Found.' });
-		}
-		res.status(200).json(getMessage);
-	} catch {
-		return res.status(500).json({ error: 'Внешняя ошибка сервера' });
 	}
 };
 
@@ -60,7 +41,7 @@ export const getMessagesController = async (req: Request, res: Response) => {
 };
 
 export const updateMessageController = async (req: Request, res: Response) => {
-	const { messageId } = req.params;
+	const { messageId } = req.query;
 	const numericMessageId = Number(messageId);
 	const data = req.body;
 
@@ -73,7 +54,7 @@ export const updateMessageController = async (req: Request, res: Response) => {
 	}
 
 	try {
-		const updateMessage = await updateMessageService(numericMessageId, data);
+		const updateMessage = await updateMessageService({ id: numericMessageId }, data);
 
 		if (!updateMessage) {
 			return res.status(404).json({ error: 'Сообщение с таким ID не найдено' });
@@ -86,7 +67,7 @@ export const updateMessageController = async (req: Request, res: Response) => {
 };
 
 export const deleteMessageController = async (req: Request, res: Response) => {
-	const { messageId } = req.params;
+	const { messageId } = req.query;
 	const numericMessageId = Number(messageId);
 
 	if (!messageId || isNaN(numericMessageId)) {
@@ -94,7 +75,9 @@ export const deleteMessageController = async (req: Request, res: Response) => {
 	}
 
 	try {
-		const deleteMessage = await deleteMessageService(numericMessageId);
+		const deleteMessage = await deleteMessageService({
+			id: numericMessageId,
+		});
 
 		if (!deleteMessage) {
 			return res.status(404).json({ error: 'Сообщение с таким ID не найдено' });

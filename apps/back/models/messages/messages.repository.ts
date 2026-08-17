@@ -7,33 +7,24 @@ export const createMessageInDb = async (data: Prisma.MessageCreateInput) => {
 	});
 };
 
-export const getMessageFromDb = async (where: Prisma.MessageWhereUniqueInput) => {
-	return prisma.message.findUnique({
-		where,
-	});
-};
-
 export const getMessagesFromDb = async (where: Prisma.MessageWhereInput) => {
 	return prisma.message.findMany({
 		where,
 	});
 };
 
-export const updateMessageIdDb = async (messageId: number, data: Prisma.MessageUpdateInput) => {
+export const updateMessageIdDb = async (
+	where: Prisma.MessageWhereUniqueInput,
+	data: Prisma.MessageUpdateInput,
+) => {
 	return prisma.message.update({
-		where: {
-			id: messageId,
-		},
+		where,
 		data,
 	});
 };
 
-export const deleteMessageIdDb = async (messageId: number) => {
-	return prisma.message.delete({
-		where: {
-			id: messageId,
-		},
-	});
+export const deleteMessageIdDb = async (where: Prisma.MessageWhereInput) => {
+	return prisma.message.deleteMany({ where });
 };
 
 export const deleteMessagesManyDB = async (messageIds: number[]) => {

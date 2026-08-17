@@ -3,7 +3,7 @@ services:
     image: postgres:15
     env_file: apps/back/.env
     ports:
-      - '5432:5432'
+      - '${DB_OUTER_PORT:-5433}:${DB_INNER_PORT:-5432}'
     volumes:
       - pararara:/var/lib/postgresql/data
 
@@ -11,10 +11,11 @@ services:
     build: ./apps/back
     env_file: ./apps/back/.env
     ports:
-      - '8080:8080'
+      - '${PORT:-8080}:8080'
     volumes:
       - ./apps/back:/app
       - /app/node_modules
+      - /app/generated
     depends_on:
       - db
 

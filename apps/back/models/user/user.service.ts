@@ -12,10 +12,13 @@ export const getUserService = async (where: Prisma.UserWhereUniqueInput) => {
 	return await getUserUniqueDb(where);
 };
 
-export const updateUserService = async (userId: number, data: Prisma.UserUpdateInput) => {
-	return await updateUserIdDb(userId, data);
+export const updateUserService = async (
+	where: Prisma.UserWhereUniqueInput,
+	data: Prisma.UserUpdateInput,
+) => {
+	return await updateUserIdDb(where, data);
 };
 
-export const deleteUserService = async (userId: number) => {
-	return deleteUserIdDb(userId);
+export const deleteUserService = async (where: Prisma.UserWhereInput) => {
+	return deleteUserIdDb(where);
 };

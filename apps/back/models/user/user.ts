@@ -9,6 +9,6 @@ import {
 export const router = Router();
 
 router.post('/', createUserController);
-router.get('/:id', getUserController);
-router.put('/:id', updateUserController);
-router.delete('/:id', deleteUserController);
+router.get('/', getUserController);
+router.put('/', updateUserController);
+router.delete('/', deleteUserController);
