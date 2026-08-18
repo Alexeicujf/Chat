@@ -11,6 +11,7 @@ export const router = Router();
 
 router.post('/', createChatController);
 router.get('/', getChatController);
-router.put('/', updateChatController);
-router.delete('/', deleteChatController);
+router.get('/:chatId', getChatController);
+router.put('/:chatId', updateChatController);
+router.delete('/:chatId', deleteChatController);
 router.delete('/many', deleteChatsManyController);

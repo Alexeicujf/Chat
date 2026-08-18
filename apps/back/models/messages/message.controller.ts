@@ -41,7 +41,7 @@ export const getMessagesController = async (req: Request, res: Response) => {
 };
 
 export const updateMessageController = async (req: Request, res: Response) => {
-	const { messageId } = req.query;
+	const { messageId } = req.params;
 	const numericMessageId = Number(messageId);
 	const data = req.body;
 
@@ -67,7 +67,7 @@ export const updateMessageController = async (req: Request, res: Response) => {
 };
 
 export const deleteMessageController = async (req: Request, res: Response) => {
-	const { messageId } = req.query;
+	const { messageId } = req.params;
 	const numericMessageId = Number(messageId);
 
 	if (!messageId || isNaN(numericMessageId)) {

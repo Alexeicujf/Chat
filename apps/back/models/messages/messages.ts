@@ -11,6 +11,7 @@ export const router = Router();
 
 router.post('/', createMessageController);
 router.get('/', getMessagesController);
-router.put('/', updateMessageController);
-router.delete('/', deleteMessageController);
+router.get('/:messageId', getMessagesController);
+router.put('/:messageId', updateMessageController);
+router.delete('/:messageId', deleteMessageController);
 router.delete('/many', deleteMessagesManyController);

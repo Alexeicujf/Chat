@@ -20,7 +20,7 @@ export const createChatController = async (req: Request, res: Response) => {
 };
 
 export const getChatController = async (req: Request, res: Response) => {
-	const { userId } = req.query;
+	const { userId } = req.params;
 	const numericUserId = Number(userId);
 	if (!userId || isNaN(numericUserId)) {
 		return res.status(400).json({ error: 'Вы забыли передать userId или передали не число' });
@@ -39,7 +39,7 @@ export const getChatController = async (req: Request, res: Response) => {
 };
 
 export const updateChatController = async (req: Request, res: Response) => {
-	const { chatId } = req.query;
+	const { chatId } = req.params;
 	const numericChatId = Number(chatId);
 	const data = req.body;
 
@@ -64,7 +64,7 @@ export const updateChatController = async (req: Request, res: Response) => {
 };
 
 export const deleteChatController = async (req: Request, res: Response) => {
-	const { chatId, userId } = req.query;
+	const { chatId, userId } = req.params;
 	const numericChatId = Number(chatId);
 	const numericUserId = Number(userId);
 
@@ -92,7 +92,7 @@ export const deleteChatController = async (req: Request, res: Response) => {
 };
 export const deleteChatsManyController = async (req: Request, res: Response) => {
 	try {
-		const { chatIds, userId } = req.query;
+		const { chatIds, userId } = req.params;
 
 		if (!chatIds || !Array.isArray(chatIds) || chatIds.length === 0) {
 			return res.status(400).json({ error: 'Не переданы ID чатов для удаления' });

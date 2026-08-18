@@ -10,5 +10,6 @@ export const router = Router();
 
 router.post('/', createUserController);
 router.get('/', getUserController);
-router.put('/', updateUserController);
-router.delete('/', deleteUserController);
+router.get('/:userId', getUserController);
+router.put('/:userId', updateUserController);
+router.delete('/:userId', deleteUserController);

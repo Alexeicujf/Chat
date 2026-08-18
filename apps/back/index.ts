@@ -23,7 +23,7 @@ v1Router.use('/chat', router);
 v1Router.use('/messages', router);
 v1Router.use('/user', router);
 
-app.use('/models/v1', v1Router);
+app.use('/api/v1', v1Router);
 
 app.listen(port, () => {
 	console.log(`http://localhost:${port}`);

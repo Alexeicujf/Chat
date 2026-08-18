@@ -7,12 +7,18 @@ export const createUserDb = async (data: Prisma.UserCreateInput) => {
 	});
 };
 
-export const getUserUniqueDb = async (where: Prisma.UserWhereInput) => {
+export const getUserManyDb = async (where: Prisma.UserWhereInput) => {
 	return prisma.user.findMany({
 		where,
 	});
 };
-
+export const getUserUniqueDb = async (email: string, where?: Prisma.UserWhereInput) => {
+	return prisma.user.findUnique({
+		where: {
+			email,
+		},
+	});
+};
 export const updateUserIdDb = async (
 	where: Prisma.UserWhereUniqueInput,
 	data: Prisma.UserUpdateInput,

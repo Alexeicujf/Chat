@@ -37,7 +37,7 @@ export const getUserController = async (req: Request, res: Response) => {
 };
 
 export const updateUserController = async (req: Request, res: Response) => {
-	const { id } = req.query;
+	const { id } = req.params;
 	const userId = Number(id);
 	const data = req.body;
 
@@ -63,7 +63,7 @@ export const updateUserController = async (req: Request, res: Response) => {
 };
 
 export const deleteUserController = async (req: Request, res: Response) => {
-	const { id } = req.query;
+	const { id } = req.params;
 	const userId = Number(id);
 
 	if (!id || isNaN(userId)) {
