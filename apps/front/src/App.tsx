@@ -1,41 +1,45 @@
-import { Button, Container, Typography, Box } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import { useState } from "react";
+import { Container, Box, Typography } from '@mui/material';
+import { RegisterPage } from './pages/RegisterPage/RegisterPage';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
-  const [count, setCount] = useState<number>(0); // Убрали any, поставили number!
+	return (
+		<div
+			style={{
+				background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #1e1b4b 100%)',
+				minHeight: '100vh',
+				width: '100%',
+				margin: 0,
+				padding: 0,
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+				boxSizing: 'border-box',
+			}}
+		>
+			<Container maxWidth="sm">
+				<Box
+					sx={{
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
+						gap: 2,
+					}}
+				>
+					<Typography
+						variant="h4"
+						component="h1"
+						gutterBottom
+						sx={{ color: '#fff', fontWeight: 'bold', letterSpacing: '1px', textAlign: 'center' }}
+					>
+						Добро пожаловать в Chat!
+					</Typography>
 
-  const handleIncrement = () => {
-    setCount((prev) => prev + 1);
-  };
-
-  return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          mt: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 2,
-        }}
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Добро пожаловать в Chat!
-        </Typography>
-
-        <Typography variant="body1">Кликнули: {count} раз</Typography>
-
-        <Button
-          variant="contained"
-          endIcon={<SendIcon />}
-          onClick={handleIncrement}
-        >
-          Тестовая кнопка MUI
-        </Button>
-      </Box>
-    </Container>
-  );
+					<RegisterPage />
+				</Box>
+			</Container>
+		</div>
+	);
 }
 
 export default App;
