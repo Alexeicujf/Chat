@@ -1,17 +1,21 @@
-import dotenv from "dotenv";
-import path from "path";
+import 'dotenv/config';
+import * as zod from 'zod';
 
-// Подгружаем корневой .env
-dotenv.config({ path: path.resolve(__dirname, "../../../../.env") });
+const envSchema = zod.object({
+	// Исправили опечатку с PORD на PORT
+	PORT: zod.string().transform(Number).default(8080),
+	DATABASE_URL: zod.string().url('DATABASE_URL должен быть валидным URL-адресом'),
+});
+
+const env = envSchema.parse(process.env);
 
 export const config = {
-  server: {
-    port: process.env.BACKEND_PORT
-      ? parseInt(process.env.BACKEND_PORT, 10)
-      : 8080,
-  },
-  db: {
-    url: process.env.DATABASE_URL,
-  },
-  // Сюда потом легко допишем jwt, cors и т.д.
-};
+	server: {
+		port: env.PORT,
+	},
+	db: {
+		url: env.DATABASE_URL,
+	},
+} as const;
+
+export type Config = typeof config;

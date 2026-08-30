@@ -25,7 +25,7 @@ model User {
 model Chat {
   id Int @id @default(autoincrement())
   title String?
-  isChat Boolean @default(false)
+  isGroup Boolean @default(false)
   users User[]
   messages Message[]
 }
