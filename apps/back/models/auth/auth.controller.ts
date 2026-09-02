@@ -14,7 +14,7 @@ export const registerUserController = async (req: Request, res: Response) => {
 	return res.status(201).json({ user: { id: user.id, email: user.email, nick: user.nick } });
 };
 
-export const loginuserConstroller = async (req: Request, res: Response) => {
+export const loginUserConstroller = async (req: Request, res: Response) => {
 	const { email, password } = req.body;
 
 	if (!email || !password) {

@@ -1,220 +1,88 @@
-import React, { useState } from 'react';
+import { Button, Box } from '@mui/material';
+import { TextField } from '@/components/atoms/TextField';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { registerSchema, type RegisterFormValues } from './registerSchema';
+import { api } from '@/api';
 
 export const RegisterPage = () => {
-	const [register, setRegisntr] = useState({
-		email: '',
-		password: '',
-		confirmPassword: '',
-		nick: '',
+	const navigate = useNavigate();
+
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<RegisterFormValues>({
+		resolver: zodResolver(registerSchema),
 	});
 
-	const hundleOnChenge = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setRegisntr((prev) => ({
-			...prev,
-			[name]: value,
-		}));
-	};
-
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		if (register.password !== register.confirmPassword) {
-			alert('пороли  не совпадают!');
-			return;
-		}
+	const onSubmit = async (data: RegisterFormValues) => {
+		const { email, password, nick } = data;
 
 		try {
-			const response = await fetch(`http://localhost:8080/api/auth/register`, {
-				method: `POST`,
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				credentials: 'include',
-				body: JSON.stringify({ email, password, nick }),
-			});
-			if (!response.ok) {
-				alert('Что-то пошло не так!');
-				return;
-			}
-			const data = response.json();
-			console.log('Регистрация прогшла учпешно', data);
-		} catch (error) {}
+			const response = await api.post(`/auth/register`, { email, password, nick });
+			console.log('Регистрация прошлауспекшно', response.data);
+		} catch (error) {
+			console.log('Ошибка регистрации', error);
+			alert('Что-то прошло не так');
+		}
 	};
 
 	return (
-		<div
-			style={{
-				display: 'flex',
-				justifyContent: 'center',
-				alignItems: 'center',
-				minHeight: '90vh',
-				fontFamily: 'sans-serif',
-			}}
-		>
-			<form
-				onSubmit={handleSubmit}
-				style={{
-					display: 'flex',
-					flexDirection: 'column',
-					width: '360px',
-					padding: '40px 30px',
-					backgroundColor: 'rgba(43, 48, 74, 0.95)',
-					borderRadius: '16px',
-					boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
-					color: '#fff',
-				}}
-			>
-				<div
-					style={{
-						display: 'flex',
-						gap: '20px',
-						marginBottom: '30px',
-						fontSize: '14px',
-						fontWeight: 'bold',
-						color: '#aaa',
-					}}
+		<form onSubmit={handleSubmit(onSubmit)}>
+			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%' }}>
+				<TextField
+					label="Никнейм"
+					variant="outlined"
+					fullWidth
+					{...register('nick')}
+					error={!!errors.nick}
+					helperText={errors.nick?.message}
+				/>
+
+				<TextField
+					label="Email"
+					variant="outlined"
+					type="email"
+					fullWidth
+					{...register('email')}
+					error={!!errors.email}
+					helperText={errors.email?.message}
+				/>
+
+				<TextField
+					label="Пароль"
+					variant="outlined"
+					type="password"
+					fullWidth
+					{...register('password')}
+					error={!!errors.password}
+					helperText={errors.password?.message}
+				/>
+
+				<TextField
+					label="Повторите пароль"
+					variant="outlined"
+					type="password"
+					fullWidth
+					{...register('confirmPassword')}
+					error={!!errors.confirmPassword}
+					helperText={errors.confirmPassword?.message}
+				/>
+
+				<Button type="submit" variant="contained" size="large" fullWidth>
+					Зарегистрироваться
+				</Button>
+				<Button
+					variant="text"
+					sx={{ color: '#94a3b8', textTransform: 'none', mt: 1 }}
+					onClick={() => navigate('/login')}
+					fullWidth
 				>
-					<span>ВХОД</span>
-					<span style={{ color: '#fff', borderBottom: '2px solid #2979ff', paddingBottom: '4px' }}>
-						РЕГИСТРАЦИЯ
-					</span>
-				</div>
-
-				<div style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
-					<label
-						style={{
-							fontSize: '11px',
-							fontWeight: 'bold',
-							color: '#9aa0a6',
-							marginBottom: '8px',
-							letterSpacing: '1px',
-						}}
-					>
-						НИКНЕЙМ
-					</label>
-					<input
-						type="text"
-						name="nick"
-						value={register.nick}
-						onChange={hundleOnChenge}
-						style={{
-							padding: '14px 20px',
-							borderRadius: '24px',
-							border: 'none',
-							backgroundColor: 'rgba(255,255,255,0.08)',
-							color: '#fff',
-							fontSize: '14px',
-							outline: 'none',
-						}}
-					/>
-				</div>
-
-				{/* Поле Email */}
-				<div style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
-					<label
-						style={{
-							fontSize: '11px',
-							fontWeight: 'bold',
-							color: '#9aa0a6',
-							marginBottom: '8px',
-							letterSpacing: '1px',
-						}}
-					>
-						EMAIL / ПОЧТА
-					</label>
-					<input
-						type="email"
-						name="email"
-						value={register.email}
-						onChange={hundleOnChenge}
-						style={{
-							padding: '14px 20px',
-							borderRadius: '24px',
-							border: 'none',
-							backgroundColor: 'rgba(255,255,255,0.08)',
-							color: '#fff',
-							fontSize: '14px',
-							outline: 'none',
-						}}
-					/>
-				</div>
-
-				<div style={{ display: 'flex', flexDirection: 'column', marginBottom: '20px' }}>
-					<label
-						style={{
-							fontSize: '11px',
-							fontWeight: 'bold',
-							color: '#9aa0a6',
-							marginBottom: '8px',
-							letterSpacing: '1px',
-						}}
-					>
-						ПАРОЛЬ
-					</label>
-					<input
-						type="password"
-						name="password"
-						value={register.password}
-						onChange={hundleOnChenge}
-						style={{
-							padding: '14px 20px',
-							borderRadius: '24px',
-							border: 'none',
-							backgroundColor: 'rgba(255,255,255,0.08)',
-							color: '#fff',
-							fontSize: '14px',
-							outline: 'none',
-						}}
-					/>
-				</div>
-
-				<div style={{ display: 'flex', flexDirection: 'column', marginBottom: '30px' }}>
-					<label
-						style={{
-							fontSize: '11px',
-							fontWeight: 'bold',
-							color: '#9aa0a6',
-							marginBottom: '8px',
-							letterSpacing: '1px',
-						}}
-					>
-						ПОДТВЕРЖДЕНИЕ ПАРОЛЯ
-					</label>
-					<input
-						type="password"
-						name="confirmPassword"
-						value={register.confirmPassword}
-						onChange={hundleOnChenge}
-						style={{
-							padding: '14px 20px',
-							borderRadius: '24px',
-							border: 'none',
-							backgroundColor: 'rgba(255,255,255,0.08)',
-							color: '#fff',
-							fontSize: '14px',
-							outline: 'none',
-						}}
-					/>
-				</div>
-
-				<button
-					type="submit"
-					style={{
-						padding: '14px',
-						borderRadius: '24px',
-						border: 'none',
-						backgroundColor: '#2979ff',
-						color: 'white',
-						fontWeight: 'bold',
-						cursor: 'pointer',
-						fontSize: '14px',
-						letterSpacing: '1px',
-					}}
-				>
-					ЗАРЕГИСТРИРОВАТЬСЯ
-				</button>
-			</form>
-		</div>
+					Уже есть аккаунт? Войти
+				</Button>
+			</Box>
+		</form>
 	);
 };

@@ -1,14 +1,11 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { accessTokenCookie, refreshTokenCookie } from './auth.cookies';
-
+import { JWT_ACCESS_SECRET, JWT_REFRESH_SECRET } from '../../config/const';
 interface IUser {
 	id: string | number;
 	email: string;
 }
-
-const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 
 export const issueTokens = async (res: Response, user: IUser) => {
 	if (!JWT_ACCESS_SECRET || !JWT_REFRESH_SECRET) {
