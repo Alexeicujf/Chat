@@ -1,11 +1,8 @@
-const isNode = typeof window === 'undefined';
-
-// @ts-ignore
-const currentEnv = isNode ? (eval('process') as any)?.env?.NODE_ENV : '';
+const isProduction = process.env.NODE_ENV === 'production';
 
 export const accessTokenCookie = {
 	httpOnly: true,
-	secure: currentEnv === 'production', // На локалке станет false, куки запишутся по HTTP!
+	secure: isProduction,
 	sameSite: 'lax' as const,
 	maxAge: 15 * 60 * 1000,
 	path: '/',
@@ -13,8 +10,8 @@ export const accessTokenCookie = {
 
 export const refreshTokenCookie = {
 	httpOnly: true,
-	secure: currentEnv === 'production',
+	secure: isProduction,
 	sameSite: 'lax' as const,
 	maxAge: 30 * 24 * 60 * 60 * 1000,
-	path: '/api/v1/auth/refresh', // Наш правильный v1 путь
+	path: '/api/v1/auth/refresh',
 };

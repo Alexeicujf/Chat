@@ -10,7 +10,7 @@ export const LoginPage = () => {
 	const navigate = useNavigate();
 
 	const {
-		register: login,
+		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<LoginFormValues>({
@@ -22,9 +22,8 @@ export const LoginPage = () => {
 
 		try {
 			const response = await api.post(`/auth/login`, { email, password });
-			console.log('Вход прошел успешно', response.data);
 		} catch (error) {
-			console.log('Ошибка взода', error);
+			console.error('Ошибка взода', error);
 			alert('Ошибка входа, возможно вы не верно указали данные');
 		}
 	};
@@ -45,7 +44,7 @@ export const LoginPage = () => {
 					variant="outlined"
 					type="email"
 					fullWidth
-					{...login('email')}
+					{...register('email')}
 					error={!!errors.email}
 					helperText={errors.email?.message}
 				/>
@@ -55,7 +54,7 @@ export const LoginPage = () => {
 					variant="outlined"
 					type="password"
 					fullWidth
-					{...login('password')}
+					{...register('password')}
 					error={!!errors.password}
 					helperText={errors.password?.message}
 				/>

@@ -21,10 +21,9 @@ export const RegisterPage = () => {
 		const { email, password, nick } = data;
 
 		try {
-			const response = await api.post(`/auth/register`, { email, password, nick });
-			console.log('Регистрация прошлауспекшно', response.data);
+			const response = await api.post(`v1/auth/register/`, { email, password, nick });
 		} catch (error) {
-			console.log('Ошибка регистрации', error);
+			console.error('Ошибка регистрации', error);
 			alert('Что-то прошло не так');
 		}
 	};
