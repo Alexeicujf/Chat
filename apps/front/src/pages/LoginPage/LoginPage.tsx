@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField } from '@/components/atoms/TextField';
 import { loginSchema, type LoginFormValues } from './loginSchema';
 import { api } from '@/api/api';
+import { Navigate } from 'react-router-dom';
 // Импортируем наши новые styled-компоненты
 import { FormContainer, FormFieldsWrapper, SubmitButton, RedirectButton } from './LoginPage.styled';
 
@@ -23,6 +24,7 @@ export const LoginPage = () => {
 		try {
 			const response = await api.post(`/auth/login`, { email, password });
 			alert(`Данные обработаны ${response.data.message || 'Успешно!'}`);
+			navigate('/');
 		} catch (error) {
 			console.error('Ошибка входа', error);
 			alert('Ошибка входа, возможно вы не верно указали данные');
@@ -56,7 +58,7 @@ export const LoginPage = () => {
 					Войти
 				</SubmitButton>
 
-				<RedirectButton variant="text" onClick={() => navigate('/register')} fullWidth>
+				<RedirectButton variant="text" onClick={() => navigate('auth/register')} fullWidth>
 					Ещё нет аккаунта? Зарегистрироваться
 				</RedirectButton>
 			</FormFieldsWrapper>

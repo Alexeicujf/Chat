@@ -28,6 +28,7 @@ export const RegisterPage = () => {
 		try {
 			const response = await api.post(`v1/auth/register/`, { email, password, nick });
 			alert(`Данные обработаны ${response.data.message || 'Успешно!'}`);
+			navigate('/');
 		} catch (error) {
 			console.error('Ошибка регистрации', error);
 			alert('Что-то прошло не так');
@@ -80,7 +81,7 @@ export const RegisterPage = () => {
 					Зарегистрироваться
 				</SubmitButton>
 
-				<RedirectButton variant="text" onClick={() => navigate('/login')} fullWidth>
+				<RedirectButton variant="text" onClick={() => navigate('auth/login')} fullWidth>
 					Уже есть аккаунт? Войти
 				</RedirectButton>
 			</FormFieldsWrapper>
