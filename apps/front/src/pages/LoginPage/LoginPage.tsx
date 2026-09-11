@@ -4,8 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField } from '@/components/atoms/TextField';
 import { loginSchema, type LoginFormValues } from './loginSchema';
 import { api } from '@/api/api';
-import { Navigate } from 'react-router-dom';
-// Импортируем наши новые styled-компоненты
 import { FormContainer, FormFieldsWrapper, SubmitButton, RedirectButton } from './LoginPage.styled';
 
 export const LoginPage = () => {

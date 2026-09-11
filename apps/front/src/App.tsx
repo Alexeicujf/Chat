@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { RegisterPage } from './pages/RegisterPage/RegisterPage';
 import { LoginPage } from './pages/LoginPage/LoginPage.tsx';
 import { ChatPage } from './pages/ChatPage/ChatPage.tsx';
@@ -28,7 +28,9 @@ function App() {
 					/>
 				</Route>
 
-				<Route path="/" element={<ChatPage />} />
+				<Route path="/chat" element={<ChatPage />} />
+
+				<Route path="/" element={<Navigate to="/auth/login" replace />} />
 			</Routes>
 		</BrowserRouter>
 	);

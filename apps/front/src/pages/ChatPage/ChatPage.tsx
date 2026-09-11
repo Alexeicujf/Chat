@@ -1,4 +1,3 @@
-import React from 'react';
 import { ChatWrapper } from './ChatPage.style';
 
 export const ChatPage = () => {
