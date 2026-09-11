@@ -1,10 +1,15 @@
-import { Button, Box } from '@mui/material';
-import { TextField } from '@/components/atoms/TextField';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { TextField } from '@/components/atoms/TextField';
 import { registerSchema, type RegisterFormValues } from './registerSchema';
-import { api } from '@/api';
+import { api } from '@/api/api';
+import {
+	FormContainer,
+	FormFieldsWrapper,
+	SubmitButton,
+	RedirectButton,
+} from './RegisterPage.styled';
 
 export const RegisterPage = () => {
 	const navigate = useNavigate();
@@ -22,6 +27,7 @@ export const RegisterPage = () => {
 
 		try {
 			const response = await api.post(`v1/auth/register/`, { email, password, nick });
+			alert(`Данные обработаны ${response.data.message || 'Успешно!'}`);
 		} catch (error) {
 			console.error('Ошибка регистрации', error);
 			alert('Что-то прошло не так');
@@ -29,8 +35,8 @@ export const RegisterPage = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%' }}>
+		<FormContainer onSubmit={handleSubmit(onSubmit)}>
+			<FormFieldsWrapper>
 				<TextField
 					label="Никнейм"
 					variant="outlined"
@@ -70,18 +76,14 @@ export const RegisterPage = () => {
 					helperText={errors.confirmPassword?.message}
 				/>
 
-				<Button type="submit" variant="contained" size="large" fullWidth>
+				<SubmitButton type="submit" variant="contained" size="large" fullWidth>
 					Зарегистрироваться
-				</Button>
-				<Button
-					variant="text"
-					sx={{ color: '#94a3b8', textTransform: 'none', mt: 1 }}
-					onClick={() => navigate('/login')}
-					fullWidth
-				>
+				</SubmitButton>
+
+				<RedirectButton variant="text" onClick={() => navigate('/login')} fullWidth>
 					Уже есть аккаунт? Войти
-				</Button>
-			</Box>
-		</form>
+				</RedirectButton>
+			</FormFieldsWrapper>
+		</FormContainer>
 	);
 };

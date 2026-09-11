@@ -1,10 +1,11 @@
-import { Button, Box } from '@mui/material';
-import { TextField } from '@/components/atoms/TextField';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { TextField } from '@/components/atoms/TextField';
 import { loginSchema, type LoginFormValues } from './loginSchema';
-import { api } from '@/api';
+import { api } from '@/api/api';
+// Импортируем наши новые styled-компоненты
+import { FormContainer, FormFieldsWrapper, SubmitButton, RedirectButton } from './LoginPage.styled';
 
 export const LoginPage = () => {
 	const navigate = useNavigate();
@@ -19,26 +20,18 @@ export const LoginPage = () => {
 
 	const onSubmit = async (data: LoginFormValues) => {
 		const { email, password } = data;
-
 		try {
 			const response = await api.post(`/auth/login`, { email, password });
+			alert(`Данные обработаны ${response.data.message || 'Успешно!'}`);
 		} catch (error) {
-			console.error('Ошибка взода', error);
+			console.error('Ошибка входа', error);
 			alert('Ошибка входа, возможно вы не верно указали данные');
 		}
 	};
+
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
-			<Box
-				sx={{
-					display: 'flex',
-					flexDirection: 'column',
-					gap: 3,
-					width: '100%',
-					maxWidth: 400,
-					mx: 'auto',
-				}}
-			>
+		<FormContainer onSubmit={handleSubmit(onSubmit)}>
+			<FormFieldsWrapper>
 				<TextField
 					label="Email"
 					variant="outlined"
@@ -59,19 +52,14 @@ export const LoginPage = () => {
 					helperText={errors.password?.message}
 				/>
 
-				<Button type="submit" variant="contained" size="large" fullWidth>
+				<SubmitButton type="submit" variant="contained" size="large" fullWidth>
 					Войти
-				</Button>
+				</SubmitButton>
 
-				<Button
-					variant="text"
-					sx={{ color: '#94a3b8', textTransform: 'none', mt: 1 }}
-					onClick={() => navigate('/register')}
-					fullWidth
-				>
+				<RedirectButton variant="text" onClick={() => navigate('/register')} fullWidth>
 					Ещё нет аккаунта? Зарегистрироваться
-				</Button>
-			</Box>
-		</form>
+				</RedirectButton>
+			</FormFieldsWrapper>
+		</FormContainer>
 	);
 };
