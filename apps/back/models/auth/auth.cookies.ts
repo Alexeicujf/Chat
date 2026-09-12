@@ -1,7 +1,6 @@
 const isProduction = process.env.NODE_ENV === 'production';
 
 export const accessTokenCookie = {
-	// почитать!
 	httpOnly: true,
 	secure: isProduction,
 	sameSite: 'lax' as const,
@@ -10,10 +9,9 @@ export const accessTokenCookie = {
 };
 
 export const refreshTokenCookie = {
-	// почитать!!!
 	httpOnly: true,
 	secure: isProduction,
 	sameSite: 'lax' as const,
 	maxAge: 30 * 24 * 60 * 60 * 1000,
-	path: '/api/auth/refresh',
+	path: '/api/v1/auth/refresh',
 };

@@ -1,41 +1,39 @@
-import { Button, Container, Typography, Box } from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { RegisterPage } from './pages/RegisterPage/RegisterPage';
+import { LoginPage } from './pages/LoginPage/LoginPage.tsx';
+import { ChatPage } from './pages/ChatPage/ChatPage.tsx';
+import { AuthLayout } from './components/templates/AuthLayout/AuthLayout.tsx';
+import { PublicRoute } from './providers/PublicRoute.tsx';
 
 function App() {
-  const [count, setCount] = useState<number>(0); // Убрали any, поставили number!
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path="/auth" element={<PublicRoute />}>
+					<Route
+						path="register"
+						element={
+							<AuthLayout title="Добро пожаловать в чат">
+								<RegisterPage />
+							</AuthLayout>
+						}
+					/>
+					<Route
+						path="login"
+						element={
+							<AuthLayout title="Вход в аккаунт">
+								<LoginPage />
+							</AuthLayout>
+						}
+					/>
+				</Route>
 
-  const handleIncrement = () => {
-    setCount((prev) => prev + 1);
-  };
+				<Route path="/chat" element={<ChatPage />} />
 
-  return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          mt: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 2,
-        }}
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Добро пожаловать в Chat!
-        </Typography>
-
-        <Typography variant="body1">Кликнули: {count} раз</Typography>
-
-        <Button
-          variant="contained"
-          endIcon={<SendIcon />}
-          onClick={handleIncrement}
-        >
-          Тестовая кнопка MUI
-        </Button>
-      </Box>
-    </Container>
-  );
+				<Route path="/" element={<Navigate to="/auth/login" replace />} />
+			</Routes>
+		</BrowserRouter>
+	);
 }
 
 export default App;

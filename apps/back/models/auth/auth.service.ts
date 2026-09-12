@@ -28,4 +28,9 @@ export const loginUser = async (email: string, password: string) => {
 	}
 	return user;
 };
+
+export const refrechTocken = async () => {
+	
+}
+//  сделать refrech!!!!
 // почитать про интерфейс и тайп оф в ts
