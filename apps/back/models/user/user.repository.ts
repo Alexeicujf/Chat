@@ -12,11 +12,9 @@ export const getUserManyDb = async (where: Prisma.UserWhereInput) => {
 		where,
 	});
 };
-export const getUserUniqueDb = async (email: string, where?: Prisma.UserWhereInput) => {
+export const getUserUniqueDb = async (where: Prisma.UserWhereUniqueInput) => {
 	return prisma.user.findUnique({
-		where: {
-			email,
-		},
+		where,
 	});
 };
 export const updateUserIdDb = async (

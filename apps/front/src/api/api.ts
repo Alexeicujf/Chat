@@ -16,7 +16,7 @@ api.interceptors.response.use(
 	async (error: AxiosError) => {
 		const originalRequest = error.config as CustomAxiosRequestConfig;
 		const isUnAuth = error.response?.status === 401;
-		const isRefreshRequest = originalRequest?.url?.includes('/v1/auth/refresh');
+		const isRefreshRequest = originalRequest?.url?.includes('/auth/refresh');
 		const alreadyRetried = originalRequest?._retry;
 
 		if (!isUnAuth || !originalRequest || alreadyRetried || isRefreshRequest) {

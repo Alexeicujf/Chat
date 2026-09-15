@@ -17,7 +17,7 @@ export const registerUserController = async (req: Request, res: Response) => {
 	return res.status(201).json({ user: { id: user.id, email: user.email, nick: user.nick } });
 };
 
-export const loginUserConstroller = async (req: Request, res: Response) => {
+export const loginUserController = async (req: Request, res: Response) => {
 	const { email, password } = req.body;
 
 	if (!email || !password) {
@@ -25,6 +25,7 @@ export const loginUserConstroller = async (req: Request, res: Response) => {
 	}
 
 	const user = await loginUser(email, password);
+	console.log(user);
 	await issueTokens(res, user);
 	return res.status(200).json({ user: { id: user.id, email: user.email, nick: user.nick } });
 };
@@ -36,10 +37,12 @@ interface IJwtPayload {
 
 export const refreshUserController = async (req: Request, res: Response) => {
 	try {
-		const refreshToken = req.cookies?.refrechTockenccc;
+		const refreshToken = req.cookies?.refreshToken;
 		if (!refreshToken) {
 			return res.status(401).json('refresh token отсутствует');
 		}
+		console.log(refreshToken);
+
 		try {
 			const decoded = jwt.verify(refreshToken, config.jwt.refreshSecret) as IJwtPayload;
 			const user = await prisma.user.findUnique({

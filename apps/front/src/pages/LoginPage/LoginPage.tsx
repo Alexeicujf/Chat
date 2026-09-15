@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField } from '@/components/atoms/TextField';
@@ -20,9 +20,9 @@ export const LoginPage = () => {
 	const onSubmit = async (data: LoginFormValues) => {
 		const { email, password } = data;
 		try {
-			const response = await api.post(`/auth/login`, { email, password });
+			const response = await api.post(`v1/auth/login`, { email, password });
 			alert(`Данные обработаны ${response.data.message || 'Успешно!'}`);
-			navigate('/');
+			navigate('/chat');
 		} catch (error) {
 			console.error('Ошибка входа', error);
 			alert('Ошибка входа, возможно вы не верно указали данные');
@@ -56,7 +56,7 @@ export const LoginPage = () => {
 					Войти
 				</SubmitButton>
 
-				<RedirectButton variant="text" onClick={() => navigate('auth/register')} fullWidth>
+				<RedirectButton variant="text" onClick={() => navigate('/auth/register')} fullWidth>
 					Ещё нет аккаунта? Зарегистрироваться
 				</RedirectButton>
 			</FormFieldsWrapper>

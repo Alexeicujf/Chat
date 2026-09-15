@@ -20,10 +20,10 @@ export const createUserController = async (req: Request, res: Response) => {
 };
 
 export const getUserController = async (req: Request, res: Response) => {
-	const { id } = req.query;
-	const userId = Number(id);
-	if (!id || isNaN(userId)) {
-		return res.status(400).json({ error: 'В запросе отсутствует ID' });
+	console.log('--- ДЕБАГ ЮЗЕРА НА БЭКЕ ---', req.user);
+	const userId = Number(req.user?.id);
+	if (!userId || isNaN(userId)) {
+		return res.status(400).json({ error: 'Ошибка авторизации' });
 	}
 	try {
 		const getUser = await getUserService({ id: userId });

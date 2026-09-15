@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router';
 export const PublicRoute = () => {
 	const isAuthenticated = false;
 

@@ -12,10 +12,12 @@ export const issueTokens = async (res: Response, user: IUser) => {
 	const { accessSecret, refreshSecret } = config.jwt;
 
 	const accessToken = jwt.sign({ sub: user.id, email: user.email }, accessSecret, {
-		expiresIn: '15m',
+		expiresIn: '2m',
 	});
 
-	const refreshToken = jwt.sign({ sub: user.id }, refreshSecret, { expiresIn: '30d' });
+	const refreshToken = jwt.sign({ sub: user.id }, refreshSecret, { expiresIn: '3m' });
+
+	console.log(accessToken, refreshToken);
 
 	res.cookie('accessToken', accessToken, accessTokenCookie);
 	res.cookie('refreshToken', refreshToken, refreshTokenCookie);
@@ -25,7 +27,7 @@ export const issueAccessToken = async (res: Response, user: IUser) => {
 	const { accessSecret } = config.jwt;
 
 	const accessToken = jwt.sign({ sub: user.id, email: user.email }, accessSecret, {
-		expiresIn: '15m',
+		expiresIn: '2m',
 	});
 
 	res.cookie('accessToken', accessToken, accessTokenCookie);

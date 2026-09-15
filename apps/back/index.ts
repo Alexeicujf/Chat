@@ -5,9 +5,11 @@ import { router as messageRouter } from './models/messages/messages';
 import { router as userRouter } from './models/user/user';
 import { router as authRouter } from './models/auth/auth.route';
 import { config } from '@/config/config';
+import cookieParser from 'cookie-parser';
+
 const app = express();
 const port = Number(process.env.PORT) || 3000;
-
+app.use(cookieParser());
 app.use(
 	cors({
 		origin: config.server.frontendUrl,
@@ -26,7 +28,7 @@ v1Router.use('/messages', messageRouter);
 v1Router.use('/user', userRouter);
 v1Router.use('/auth', authRouter);
 app.use('/api/v1', v1Router);
-2;
+
 app.listen(port, () => {
 	console.log(`http://localhost:${port}`);
 });

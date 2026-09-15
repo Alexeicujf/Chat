@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { access } from 'node:fs';
+import { ref } from 'node:process';
 
 declare global {
 	namespace Express {
@@ -25,6 +27,8 @@ const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 
 export const authMiddlware = (req: Request, res: Response, next: NextFunction) => {
 	const token = req.cookies?.accessToken;
+
+	console.log('authMiddlware', req.cookies, token);
 
 	if (!token) {
 		return res.status(401).json({ message: 'Ошибка входа, нужна авторизация' });

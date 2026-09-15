@@ -15,7 +15,7 @@ export const registerUser = async (email: string, password: string, nick: string
 };
 
 export const loginUser = async (email: string, password: string) => {
-	const user = await getUserUniqueDb(email);
+	const user = await getUserUniqueDb({ email });
 
 	if (!user) {
 		throw new Error('Не верный email или пароль');
@@ -29,8 +29,6 @@ export const loginUser = async (email: string, password: string) => {
 	return user;
 };
 
-export const refrechTocken = async () => {
-	
-}
+export const refrechTocken = async () => {};
 //  сделать refrech!!!!
 // почитать про интерфейс и тайп оф в ts
