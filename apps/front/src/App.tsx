@@ -1,11 +1,4 @@
-import {
-	BrowserRouter,
-	Routes,
-	Route,
-	Navigate,
-	createBrowserRouter,
-	RouterProvider,
-} from 'react-router';
+import { Navigate, createBrowserRouter, RouterProvider } from 'react-router';
 import { RegisterPage } from './pages/RegisterPage/RegisterPage';
 import { LoginPage } from './pages/LoginPage/LoginPage.tsx';
 import { ChatPage } from './pages/ChatPage/ChatPage.tsx';

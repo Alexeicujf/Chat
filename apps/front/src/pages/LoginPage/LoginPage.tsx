@@ -21,11 +21,9 @@ export const LoginPage = () => {
 		const { email, password } = data;
 		try {
 			const response = await api.post(`v1/auth/login`, { email, password });
-			alert(`Данные обработаны ${response.data.message || 'Успешно!'}`);
 			navigate('/chat');
 		} catch (error) {
 			console.error('Ошибка входа', error);
-			alert('Ошибка входа, возможно вы не верно указали данные');
 		}
 	};
 

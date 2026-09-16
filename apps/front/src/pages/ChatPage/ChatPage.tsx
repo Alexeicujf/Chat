@@ -10,7 +10,6 @@ export const ChatPage = () => {
 		const checkSession = async () => {
 			try {
 				await api.get(checkAuthUrl);
-				console.log('Сессия активна');
 				navigate('/chat');
 			} catch (error) {
 				console.error('Сессия не активна', error);

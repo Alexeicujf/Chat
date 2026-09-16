@@ -27,11 +27,9 @@ export const RegisterPage = () => {
 
 		try {
 			const response = await api.post(`v1/auth/register/`, { email, password, nick });
-			alert(`Данные обработаны ${response.data.message || 'Успешно!'}`);
 			navigate('/');
 		} catch (error) {
 			console.error('Ошибка регистрации', error);
-			alert('Что-то прошло не так');
 		}
 	};
 

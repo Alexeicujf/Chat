@@ -4,6 +4,7 @@ import { getChatService } from './chats.service';
 import { updateChatService } from './chats.service';
 import { deleteChatService } from './chats.service';
 import { deleteChatsService } from './chats.service';
+
 export const createChatController = async (req: Request, res: Response) => {
 	const data = req.body;
 

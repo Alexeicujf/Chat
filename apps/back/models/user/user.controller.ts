@@ -20,7 +20,7 @@ export const createUserController = async (req: Request, res: Response) => {
 };
 
 export const getUserController = async (req: Request, res: Response) => {
-	console.log('--- ДЕБАГ ЮЗЕРА НА БЭКЕ ---', req.user);
+	console.error('--- ДЕБАГ ЮЗЕРА НА БЭКЕ ---', req.user);
 	const userId = Number(req.user?.id);
 	if (!userId || isNaN(userId)) {
 		return res.status(400).json({ error: 'Ошибка авторизации' });

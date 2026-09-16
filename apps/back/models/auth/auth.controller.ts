@@ -1,9 +1,6 @@
-import { loginUser, registerUser } from './auth.service';
+import { loginUser, registerUser, refreshUserSession } from './auth.service';
 import { Request, Response } from 'express';
 import { issueTokens, issueAccessToken } from './auth.utils';
-import jwt from 'jsonwebtoken';
-import { config } from '@/config/config';
-import { prisma } from '@/prisma';
 
 export const registerUserController = async (req: Request, res: Response) => {
 	const { email, password, nick } = req.body;
@@ -30,29 +27,16 @@ export const loginUserController = async (req: Request, res: Response) => {
 	return res.status(200).json({ user: { id: user.id, email: user.email, nick: user.nick } });
 };
 
-interface IJwtPayload {
-	sub: string | number;
-	email?: string;
-}
-
 export const refreshUserController = async (req: Request, res: Response) => {
 	try {
 		const refreshToken = req.cookies?.refreshToken;
 		if (!refreshToken) {
 			return res.status(401).json('refresh token отсутствует');
 		}
-		console.log(refreshToken);
 
 		try {
-			const decoded = jwt.verify(refreshToken, config.jwt.refreshSecret) as IJwtPayload;
-			const user = await prisma.user.findUnique({
-				where: {
-					id: Number(decoded.sub),
-				},
-			});
-			if (!user) {
-				return res.status(401).json('Пользователь  не найден');
-			}
+			const user = await refreshUserSession(refreshToken);
+
 			await issueAccessToken(res, user);
 
 			return res.status(200).json({ success: true, message: 'Токены обновлены' });

@@ -4,8 +4,8 @@ import * as zod from 'zod';
 const envSchema = zod.object({
 	PORT: zod.string().transform(Number).default(8080),
 	DATABASE_URL: zod.string().url('DATABASE_URL должен быть валидным URL-адресом'),
-	JWT_ACCESS_SECRET: zod.string().min(1, 'Секрет аксеса обязателен для запуска сервера'),
-	JWT_REFRESH_SECRET: zod.string().min(1, 'Секрет рефреша обязателен для запуска сервера'),
+	JWT_ACCESS_SECRET: zod.string(),
+	JWT_REFRESH_SECRET: zod.string(),
 	FRONTEND_URL: zod.string().default('http://localhost:5173'),
 });
 

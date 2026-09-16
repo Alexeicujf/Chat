@@ -17,7 +17,7 @@ export const issueTokens = async (res: Response, user: IUser) => {
 
 	const refreshToken = jwt.sign({ sub: user.id }, refreshSecret, { expiresIn: '3m' });
 
-	console.log(accessToken, refreshToken);
+	console.error(accessToken, refreshToken);
 
 	res.cookie('accessToken', accessToken, accessTokenCookie);
 	res.cookie('refreshToken', refreshToken, refreshTokenCookie);
