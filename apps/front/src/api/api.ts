@@ -5,7 +5,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export const api = axios.create({
-	baseURL: import.meta.env.VITE_HTTP_DOMEN || 'http://localhost:8080',
+	baseURL: import.meta.env.VITE_HTTP_DOMEN || 'http://localhost:8080/api',
 	withCredentials: true,
 });
 
