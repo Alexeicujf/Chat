@@ -1,43 +1,115 @@
-import { Button, Container, Typography, Box } from '@mui/material';
+import { Button, Container, Typography, Box, TextField, ButtonGroup } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import { io } from 'socket.io-client';
-import { useEffect } from 'react';
+import { io, Socket } from 'socket.io-client';
+import { useEffect, useState } from 'react';
 
-const socket = io('http://localhost:8080');
+interface ISocketMessage {
+	chatId: string;
+	text: string;
+	authorId: number;
+}
+
+const styles = {
+	mainWrapper: {
+		mt: 4,
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center',
+		gap: 2,
+	},
+	chatWindow: {
+		width: '100%',
+		height: '250px',
+		border: '1px solid #ccc',
+		borderRadius: 2,
+		p: 2,
+		overflowY: 'auto',
+		bgcolor: '#f9f9f9',
+	},
+	inputForm: {
+		display: 'flex',
+		width: '100%',
+		gap: 1,
+	},
+} as const;
+
+const socket: Socket = io(import.meta.env.VITE_WS_DOMEN, {
+	transports: ['websocket'],
+});
 
 function App() {
+	const [currentUserId] = useState<number>(() => Math.floor(Math.random() * 100) + 1);
+	const [activeChatId, setActiveChatId] = useState<string>('1');
+	const [inputText, setInputText] = useState<string>('');
+	const [messages, setMessages] = useState<ISocketMessage[]>([]);
+
 	useEffect(() => {
-		socket.on('message:new', (message) => {
-			console.log('message', message);
-		});
-	});
+		setMessages([]);
+		socket.emit('chat:join', activeChatId);
+
+		const handleNewMessage = (message: ISocketMessage) => {
+			if (String(message.chatId) === activeChatId) {
+				setMessages((prev) => [...prev, message]);
+			}
+		};
+
+		socket.on('message:new', handleNewMessage);
+
+		return () => {
+			socket.off('message:new', handleNewMessage);
+		};
+	}, [activeChatId]);
 
 	const handleSendMessage = () => {
+		if (!inputText.trim()) return;
+
 		socket.emit('message:send', {
-			chatId: new Date(),
-			text: 'created message',
+			chatId: activeChatId,
+			text: inputText,
+			authorId: currentUserId,
 		});
+		setInputText('');
 	};
+
 	return (
 		<Container maxWidth="sm">
-			<Box
-				sx={{
-					mt: 8,
-					display: 'flex',
-					flexDirection: 'column',
-					alignItems: 'center',
-					gap: 2,
-				}}
-			>
-				<Typography variant="h4" component="h1" gutterBottom>
-					Добро пожаловать в Chat!
+			<Box sx={styles.mainWrapper}>
+				<Typography variant="subtitle2">Вы вошли как Юзер №{currentUserId}</Typography>
+
+				<ButtonGroup variant="contained">
+					<Button onClick={() => setActiveChatId('1')} disabled={activeChatId === '1'}>
+						Чат 1
+					</Button>
+					<Button onClick={() => setActiveChatId('2')} disabled={activeChatId === '2'}>
+						Чат 2
+					</Button>
+				</ButtonGroup>
+
+				<Typography variant="h5" component="h1" sx={{ mt: 2 }}>
+					Комната: {activeChatId === '1' ? 'Первая' : 'Вторая'}
 				</Typography>
 
-				<Typography variant="body1">Кликнули: {count} раз</Typography>
+				<Box sx={styles.chatWindow}>
+					{messages.map((msg, index) => (
+						<Typography key={index} variant="body1">
+							<strong>Юзер {msg.authorId}:</strong> {msg.text}
+						</Typography>
+					))}
+				</Box>
 
-				<Button variant="contained" endIcon={<SendIcon />} onClick={handleSendMessage}>
-					Отправить сообщени
-				</Button>
+				<Box sx={styles.inputForm}>
+					<TextField
+						fullWidth
+						size="small"
+						label="Сообщение..."
+						value={inputText}
+						onChange={(e) => setInputText(e.target.value)}
+						onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+					/>
+					<Button variant="contained" endIcon={<SendIcon />} onClick={handleSendMessage}>
+						Отправить
+					</Button>
+				</Box>
 			</Box>
 		</Container>
 	);

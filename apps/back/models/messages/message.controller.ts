@@ -1,8 +1,18 @@
 import { Request, Response } from 'express';
+import { sendNewMessage } from '../socket/socket.service';
 import { createMessagesService } from './message.service';
 import { getMessagesService } from './message.service';
 import { updateMessageService } from './message.service';
 import { deleteMessageService, deleteMessagesServise } from './message.service';
+
+interface ISocketMessage {
+	id: number;
+	text: string;
+	chatId: number;
+	authorId: number;
+	createdAt: Date;
+	updatedAt: Date;
+}
 
 export const createMessageController = async (req: Request, res: Response) => {
 	const data = req.body;
@@ -13,6 +23,7 @@ export const createMessageController = async (req: Request, res: Response) => {
 
 	try {
 		const createMessage = await createMessagesService(data);
+		sendNewMessage(String(createMessage.chatId), createMessage: ISocketMessage);
 		res.status(201).json(createMessage);
 	} catch {
 		res.status(500).json({ error: 'Ошибка запроса!' });
