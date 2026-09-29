@@ -20,16 +20,25 @@ const styles = {
 	chatWindow: {
 		width: '100%',
 		height: '250px',
-		border: '1px solid #ccc',
+		border: '2px solid #1976d2', // Сделали рамку яркой синей
 		borderRadius: 2,
 		p: 2,
 		overflowY: 'auto',
-		bgcolor: '#f9f9f9',
+		bgcolor: '#1e1e1e', // Явно задаем ТЕМНЫЙ фон для окна сообщений
+		color: '#ffffff', // Явно задаем БЕЛЫЙ цвет для текста сообщений
 	},
 	inputForm: {
 		display: 'flex',
 		width: '100%',
 		gap: 1,
+		// Настройка, чтобы инпут корректно подсвечивался на темном фоне
+		'& .MuiInputBase-root': {
+			color: '#ffffff',
+			bgcolor: '#2e2e2e',
+		},
+		'& .MuiInputLabel-root': {
+			color: '#aaa',
+		},
 	},
 } as const;
 
