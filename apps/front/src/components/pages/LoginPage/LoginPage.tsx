@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField } from '@/components/atoms/TextField';
 import { loginSchema, type LoginFormValues } from './loginSchema';
-import { api } from '@/api/api';
+import { loginUser } from '@/api/auth.js';
 import { FormContainer, FormFieldsWrapper, SubmitButton, RedirectButton } from './LoginPage.styled';
 
 export const LoginPage = () => {
@@ -18,10 +18,9 @@ export const LoginPage = () => {
 	});
 
 	const onSubmit = async (data: LoginFormValues) => {
-		const { email, password } = data;
 		try {
-			const response = await api.post(`v1/auth/login`, { email, password });
-			navigate('/chat');
+			await loginUser(data);
+			navigate('/');
 		} catch (error) {
 			console.error('Ошибка входа', error);
 		}

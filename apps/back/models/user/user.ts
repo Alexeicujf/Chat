@@ -11,6 +11,6 @@ export const router = Router();
 
 router.post('/', createUserController);
 router.get('/', authMiddlware, getUserController);
-// router.get('/:userId', getUserController);
+router.get('/:userId', getUserController);
 router.put('/:userId', updateUserController);
 router.delete('/:userId', deleteUserController);

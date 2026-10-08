@@ -1,4 +1,4 @@
-import { ChatWrapper } from './ChatPage.style';
+import { ChatWrapper } from './ChatPage.style.ts';
 import { api } from '@/api/api';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';

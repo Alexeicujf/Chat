@@ -16,21 +16,14 @@ interface ITwtPatLoad {
 }
 
 export const refreshUserSession = async (refrechTocken: string) => {
-	try {
-		const decoded = jwt.verify(refrechTocken, config.jwt.refreshSecret) as ITwtPatLoad;
-		const user = await prisma.user.findUnique({
-			where: {
-				id: Number(decoded.sub),
-			},
-		});
-
-		if (!user) {
-			throw new Error('Пользователь не найден');
-		}
-		return user;
-	} catch {
-		throw new Error('Не валидны	й или просроченный токен');
+	const decoded = jwt.verify(refrechTocken, config.jwt.refreshSecret) as ITwtPatLoad;
+	const user = await prisma.user.findUnique({
+		where: { id: Number(decoded.sub) },
+	});
+	if (!user) {
+		throw new Error('Пользователь не найден');
 	}
+	return user;
 };
 
 // =>
@@ -55,7 +48,3 @@ export const loginUser = async (email: string, password: string) => {
 	}
 	return user;
 };
-
-export const refrechTocken = async () => {};
-//  сделать refrech!!!!
-// почитать про интерфейс и тайп оф в ts

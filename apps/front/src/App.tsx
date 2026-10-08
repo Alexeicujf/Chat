@@ -1,12 +1,11 @@
 import { Navigate, createBrowserRouter, RouterProvider } from 'react-router';
-import { RegisterPage } from '@pages/RegisterPage/RegisterPage.tsx';
-import { LoginPage } from '@pages/LoginPage/LoginPage.tsx';
-import { ChatPage } from '@pages/ChatPage/ChatPage.tsx';
-import { AuthLayout } from '@templates/AuthLayout/AuthLayout.tsx';
-import { PublicRoute } from './providers/PublicRoute.tsx';
+import { RegisterPage } from '@/components/pages/RegisterPage/RegisterPage.tsx';
+import { LoginPage } from '@/components/pages/LoginPage/LoginPage';
+import { ChatPage } from '@/components/pages/ChatPage/ChatPage';
+import { AuthLayout } from '@/components/templates/AuthLayout/AuthLayout';
+import { PublicRoute } from './providers/PublicRoute';
 
 const router = createBrowserRouter([
-	// сделать конфиг фаил
 	{
 		path: '/auth',
 		element: <PublicRoute />,
@@ -34,8 +33,12 @@ const router = createBrowserRouter([
 		element: <ChatPage />,
 	},
 	{
-		path: '/',
+		path: '/login',
 		element: <Navigate to="/auth/login" replace />,
+	},
+	{
+		path: '/',
+		element: <Navigate to="/chat" replace />,
 	},
 ]);
 

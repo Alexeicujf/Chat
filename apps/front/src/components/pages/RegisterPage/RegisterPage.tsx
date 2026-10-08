@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField } from '@/components/atoms/TextField';
-import { registerSchema, type RegisterFormValues } from './registerSchema';
-import { api } from '@/api/api';
+import { registerSchema, type RegisterFormValues } from './registerSchema.js';
+import { api } from '@/api/api.js';
 import {
 	FormContainer,
 	FormFieldsWrapper,
@@ -27,7 +27,7 @@ export const RegisterPage = () => {
 
 		try {
 			const response = await api.post(`v1/auth/register/`, { email, password, nick });
-			navigate('/');
+			navigate('/auth/login');
 		} catch (error) {
 			console.error('Ошибка регистрации', error);
 		}
@@ -79,7 +79,7 @@ export const RegisterPage = () => {
 					Зарегистрироваться
 				</SubmitButton>
 
-				<RedirectButton variant="text" onClick={() => navigate('auth/login')} fullWidth>
+				<RedirectButton variant="text" onClick={() => navigate('/auth/login')} fullWidth>
 					Уже есть аккаунт? Войти
 				</RedirectButton>
 			</FormFieldsWrapper>

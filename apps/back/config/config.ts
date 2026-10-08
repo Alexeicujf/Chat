@@ -7,6 +7,8 @@ const envSchema = zod.object({
 	JWT_ACCESS_SECRET: zod.string(),
 	JWT_REFRESH_SECRET: zod.string(),
 	FRONTEND_URL: zod.string().default('http://localhost:5173'),
+	JWT_ACCESS_EXPIRES_IN: zod.string().default('15m'),
+	JWT_REFRESH_EXPIRES_IN: zod.string().default('7d'),
 });
 
 const parsedEnv = envSchema.parse(process.env);
@@ -22,6 +24,8 @@ export const config = {
 	jwt: {
 		accessSecret: parsedEnv.JWT_ACCESS_SECRET,
 		refreshSecret: parsedEnv.JWT_REFRESH_SECRET,
+		accessExpiresIn: parsedEnv.JWT_ACCESS_EXPIRES_IN,
+		refreshExpiresIn: parsedEnv.JWT_REFRESH_EXPIRES_IN,
 	},
 } as const;
 

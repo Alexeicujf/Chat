@@ -1,5 +1,5 @@
 import { loginUser, registerUser, refreshUserSession } from './auth.service';
-import { Request, Response } from 'express';
+import { json, Request, Response } from 'express';
 import { issueTokens, issueAccessToken } from './auth.utils';
 
 export const registerUserController = async (req: Request, res: Response) => {
@@ -33,18 +33,13 @@ export const refreshUserController = async (req: Request, res: Response) => {
 		if (!refreshToken) {
 			return res.status(401).json('refresh token отсутствует');
 		}
+		const user = await refreshUserSession(refreshToken);
 
-		try {
-			const user = await refreshUserSession(refreshToken);
+		await issueAccessToken(res, user);
 
-			await issueAccessToken(res, user);
-
-			return res.status(200).json({
-				user: { id: user.id, email: user.email, nick: user.nick },
-			});
-		} catch (err) {
-			return res.status(401).json({ error: 'Невалидный или просроченный токен' });
-		}
+		return res.status(200).json({
+			user: { id: user.id, email: user.email, nick: user.nick },
+		});
 	} catch (error) {
 		console.error('Ошибка рефреша:', error);
 		return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
