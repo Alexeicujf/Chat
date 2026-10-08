@@ -26,6 +26,8 @@ const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 export const authMiddlware = (req: Request, res: Response, next: NextFunction) => {
 	const token = req.cookies?.accessToken;
 
+	console.error('authMiddlware', req.cookies, token);
+
 	if (!token) {
 		return res.status(401).json({ message: 'Ошибка входа, нужна авторизация' });
 	}

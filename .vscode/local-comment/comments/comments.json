@@ -1,0 +1,17 @@
+{
+  "comments": {
+    "/home/kois/Документы/Chat/apps/back/models/auth/auth.controller.ts": [
+      {
+        "id": "mu46la3wa935e323fb8789fb",
+        "line": 38,
+        "content": "Помогал ИИ ",
+        "timestamp": 1789568015468,
+        "originalLine": 38,
+        "lineContent": "const user = await refreshUserSession(refreshToken);",
+        "isShared": false,
+        "isMatched": true
+      }
+    ]
+  },
+  "shareComments": {}
+}

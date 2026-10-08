@@ -23,7 +23,7 @@ services:
     build: ./apps/front
     env_file: ./apps/front/.env
     ports:
-      - '${VITE_OUTER_PORT:-8000}:5173'
+      - '${FRONTEND_PORT:-8000}:${FRONTEND_PORT:-8000}'
     volumes:
       - ./apps/front:/app
       - /app/node_modules
