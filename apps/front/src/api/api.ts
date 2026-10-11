@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import type { InternalAxiosRequestConfig } from 'axios';
+
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 	_retry?: boolean;
 }
@@ -29,6 +30,9 @@ api.interceptors.response.use(
 			await api.post('/v1/auth/refresh');
 			return api(originalRequest);
 		} catch (refreshError) {
+			if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/auth')) {
+				window.location.href = '/auth/login';
+			}
 			return Promise.reject(refreshError);
 		}
 	},
