@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { accessTokenCookie, refreshTokenCookie } from './auth.cookies';
 import { config } from '@/config/config';
 
@@ -9,26 +9,27 @@ interface IUser {
 }
 
 export const issueTokens = async (res: Response, user: IUser) => {
-	const { accessSecret, refreshSecret } = config.jwt;
+	const { accessSecret, refreshSecret, accessExpiresIn, refreshExpiresIn } = config.jwt;
 
 	const accessToken = jwt.sign({ sub: user.id, email: user.email }, accessSecret, {
-		expiresIn: '2m',
+		expiresIn: accessExpiresIn as SignOptions['expiresIn'],
 	});
 
-	const refreshToken = jwt.sign({ sub: user.id }, refreshSecret, { expiresIn: '3m' });
-
-	console.error(accessToken, refreshToken);
+	const refreshToken = jwt.sign({ sub: user.id }, refreshSecret, {
+		expiresIn: refreshExpiresIn as SignOptions['expiresIn'],
+	});
 
 	res.cookie('accessToken', accessToken, accessTokenCookie);
 	res.cookie('refreshToken', refreshToken, refreshTokenCookie);
 };
 
 export const issueAccessToken = async (res: Response, user: IUser) => {
-	const { accessSecret } = config.jwt;
+	const { accessSecret, accessExpiresIn } = config.jwt;
 
 	const accessToken = jwt.sign({ sub: user.id, email: user.email }, accessSecret, {
-		expiresIn: '2m',
+		expiresIn: accessExpiresIn as SignOptions['expiresIn'],
 	});
 
 	res.cookie('accessToken', accessToken, accessTokenCookie);
 };
+
