@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField } from '@/components/atoms/TextField';
-import { loginSchema, type LoginFormValues } from './loginSchema';
+import { loginSchema, type LoginFormValues } from '../../../schemas/loginSchema';
 import { loginUser } from '@/api/auth.js';
 import { FormContainer, FormFieldsWrapper, SubmitButton, RedirectButton } from './LoginPage.styled';
 
@@ -19,6 +19,7 @@ export const LoginPage = () => {
 
 	const onSubmit = async (data: LoginFormValues) => {
 		try {
+			await loginUser(data);
 			await loginUser(data);
 			navigate('/');
 		} catch (error) {

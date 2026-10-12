@@ -28,7 +28,7 @@ export const PublicRoute = () => {
 	}
 
 	if (isAuth) {
-		return <Navigate to="/chat" replace />;
+		return <Navigate to="/" replace />;
 	}
 
 	return <Outlet />;

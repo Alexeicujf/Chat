@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TextField } from '@/components/atoms/TextField';
-import { registerSchema, type RegisterFormValues } from './registerSchema.js';
+import { registerSchema, type RegisterFormValues } from '../../../schemas/registerSchema.js';
 import { api } from '@/api/api.js';
 import {
 	FormContainer,

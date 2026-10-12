@@ -9,7 +9,7 @@ interface IUser {
 	email: string;
 	nick: string;
 }
-// =>
+
 interface ITwtPatLoad {
 	sub: string | number;
 	email?: string;
@@ -26,7 +26,6 @@ export const refreshUserSession = async (refrechTocken: string) => {
 	return user;
 };
 
-// =>
 export const registerUser = async (email: string, password: string, nick: string) => {
 	const passwordHash = await bcrypt.hash(password, 12);
 	const user = await createUserDb({ email, password: passwordHash, nick });

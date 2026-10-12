@@ -22,7 +22,6 @@ export const loginUserController = async (req: Request, res: Response) => {
 	}
 
 	const user = await loginUser(email, password);
-	console.log(user);
 	await issueTokens(res, user);
 	return res.status(200).json({ user: { id: user.id, email: user.email, nick: user.nick } });
 };

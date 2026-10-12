@@ -29,15 +29,7 @@ export const router = createBrowserRouter([
 		],
 	},
 	{
-		path: '/chat',
-		element: <ChatPage />,
-	},
-	{
 		path: '/',
-		element: <Navigate to="/chat" replace />,
-	},
-	{
-		path: '*',
-		element: <Navigate to="/chat" replace />,
+		element: <ChatPage />,
 	},
 ]);
