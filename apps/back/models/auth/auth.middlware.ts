@@ -24,11 +24,18 @@ interface MyJwtPayload extends jwt.JwtPayload {
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
 
 export const authMiddlware = (req: Request, res: Response, next: NextFunction) => {
-	const token = req.cookies?.accessToken;
+	let token = req.cookies?.accessToken;
+
+	if (!token && req.headers.authorization?.startsWith('Bearer ')) {
+		token = req.headers.authorization.split(' ')[1];
+	}
+
+	console.error('authMiddlware токен определен:', !!token);
 
 	if (!token) {
 		return res.status(401).json({ message: 'Ошибка входа, нужна авторизация' });
 	}
+
 	if (!JWT_ACCESS_SECRET) {
 		throw new Error('JWT секреты не заданы в переменных окружения!');
 	}

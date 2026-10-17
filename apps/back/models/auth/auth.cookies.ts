@@ -1,19 +1,19 @@
+import { timeToMs } from '@/libs/time';
+
 const isProduction = process.env.NODE_ENV === 'production';
 
 export const accessTokenCookie = {
-	// почитать!
 	httpOnly: true,
 	secure: isProduction,
 	sameSite: 'lax' as const,
-	maxAge: 15 * 60 * 1000,
+	maxAge: timeToMs(process.env.JWT_ACCESS_EXPIRES_IN || '2m'),
 	path: '/',
 };
 
 export const refreshTokenCookie = {
-	// почитать!!!
 	httpOnly: true,
 	secure: isProduction,
 	sameSite: 'lax' as const,
-	maxAge: 30 * 24 * 60 * 60 * 1000,
-	path: '/api/auth/refresh',
+	maxAge: timeToMs(process.env.JWT_REFRESH_EXPIRES_IN || '3m'),
+	path: '/',
 };

@@ -3,12 +3,26 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig(({ mode }) => {
-	const env = loadEnv(mode, path.resolve(__dirname, '../../'), '');
+	const env = loadEnv(mode, process.cwd(), '');
+
+	const port = parseInt(env.FRONTEND_PORT) || 8000;
+	const hmrHost = env.VITE_HMR_HOST || 'localhost';
 
 	return {
 		plugins: [react()],
 		server: {
-			port: env.FRONTEND_PORT ? parseInt(env.FRONTEND_PORT, 10) : 5173,
+			host: '0.0.0.0',
+			port: port,
+			strictPort: true,
+			hmr: {
+				clientPort: port,
+				host: hmrHost,
+			},
+		},
+		resolve: {
+			alias: {
+				'@': path.resolve(__dirname, './src'),
+			},
 		},
 	};
 });

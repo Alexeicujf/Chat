@@ -1,27 +1,35 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { accessTokenCookie, refreshTokenCookie } from './auth.cookies';
+import { config } from '@/config/config';
 
 interface IUser {
 	id: string | number;
 	email: string;
 }
 
-const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
-
 export const issueTokens = async (res: Response, user: IUser) => {
-	if (!JWT_ACCESS_SECRET || !JWT_REFRESH_SECRET) {
-		throw new Error('JWT секреты не заданы в переменных окружения!');
-	}
+	const { accessSecret, refreshSecret, accessExpiresIn, refreshExpiresIn } = config.jwt;
 
-	const accessToken = jwt.sign({ sub: user.id, email: user.email }, JWT_ACCESS_SECRET, {
-		expiresIn: '15m',
+	const accessToken = jwt.sign({ sub: user.id, email: user.email }, accessSecret, {
+		expiresIn: accessExpiresIn as SignOptions['expiresIn'],
 	});
 
-	const refreshToken = jwt.sign({ sub: user.id }, JWT_REFRESH_SECRET, {
-		expiresIn: '30d',
+	const refreshToken = jwt.sign({ sub: user.id }, refreshSecret, {
+		expiresIn: refreshExpiresIn as SignOptions['expiresIn'],
 	});
+
 	res.cookie('accessToken', accessToken, accessTokenCookie);
 	res.cookie('refreshToken', refreshToken, refreshTokenCookie);
 };
+
+export const issueAccessToken = async (res: Response, user: IUser) => {
+	const { accessSecret, accessExpiresIn } = config.jwt;
+
+	const accessToken = jwt.sign({ sub: user.id, email: user.email }, accessSecret, {
+		expiresIn: accessExpiresIn as SignOptions['expiresIn'],
+	});
+
+	res.cookie('accessToken', accessToken, accessTokenCookie);
+};
+

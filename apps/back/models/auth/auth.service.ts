@@ -1,11 +1,37 @@
 import bcrypt from 'bcrypt';
 import { createUserDb, getUserUniqueDb } from '../user/user.repository';
 import jwt from 'jsonwebtoken';
+import { config } from '@/config/config';
+import { prisma } from '@/prisma';
+
 interface IUser {
 	id: string;
 	email: string;
 	nick: string;
 }
+
+interface ITwtPatLoad {
+	sub: string | number;
+	email?: string;
+}
+
+export const refreshUserSession = async (refrechTocken: string) => {
+	const decoded = jwt.verify(refrechTocken, config.jwt.refreshSecret) as ITwtPatLoad;
+
+	if (!decoded || !decoded.sub) {
+		throw new Error('Невалидный токен');
+	}
+
+	const user = await prisma.user.findUnique({
+		where: { id: Number(decoded.sub) },
+	});
+
+	if (!user) {
+		throw new Error('Пользователь не найден');
+	}
+
+	return user;
+};
 
 export const registerUser = async (email: string, password: string, nick: string) => {
 	const passwordHash = await bcrypt.hash(password, 12);
@@ -15,7 +41,7 @@ export const registerUser = async (email: string, password: string, nick: string
 };
 
 export const loginUser = async (email: string, password: string) => {
-	const user = await getUserUniqueDb(email);
+	const user = await getUserUniqueDb({ email });
 
 	if (!user) {
 		throw new Error('Не верный email или пароль');
@@ -28,4 +54,3 @@ export const loginUser = async (email: string, password: string) => {
 	}
 	return user;
 };
-// почитать про интерфейс и тайп оф в ts

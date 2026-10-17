@@ -5,6 +5,7 @@ import { getChatFromDb } from './chats.repository';
 import { updateChatIdDb } from './chats.repository';
 import { deleteChatIdDb } from './chats.repository';
 import { deleteChatsManyInDb } from './chats.repository';
+
 export const createChatService = async (data: Prisma.ChatCreateInput) => {
 	return await createChatInDb(data);
 };
