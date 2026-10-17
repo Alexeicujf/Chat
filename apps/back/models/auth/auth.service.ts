@@ -17,12 +17,19 @@ interface ITwtPatLoad {
 
 export const refreshUserSession = async (refrechTocken: string) => {
 	const decoded = jwt.verify(refrechTocken, config.jwt.refreshSecret) as ITwtPatLoad;
+
+	if (!decoded || !decoded.sub) {
+		throw new Error('Невалидный токен');
+	}
+
 	const user = await prisma.user.findUnique({
 		where: { id: Number(decoded.sub) },
 	});
+
 	if (!user) {
 		throw new Error('Пользователь не найден');
 	}
+
 	return user;
 };
 

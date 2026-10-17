@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { Navigate, Outlet } from 'react-router';
-import { api } from '@/api/api';
-
+import { checkUserSession } from '@/api/auth.js';
 export const PublicRoute = () => {
 	const [isAuth, setIsAuth] = useState<boolean | null>(null);
 	const isChecking = useRef(false);
@@ -12,7 +11,7 @@ export const PublicRoute = () => {
 
 		const checkSession = async () => {
 			try {
-				await api.get('/v1/user');
+				await checkUserSession();
 				setIsAuth(true);
 			} catch (error) {
 				setIsAuth(false);

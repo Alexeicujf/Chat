@@ -30,7 +30,7 @@ export const refreshUserController = async (req: Request, res: Response) => {
 	try {
 		const refreshToken = req.cookies?.refreshToken;
 		if (!refreshToken) {
-			return res.status(401).json('refresh token отсутствует');
+			return res.status(401).json({ error: 'refresh token отсутствует' });
 		}
 		const user = await refreshUserSession(refreshToken);
 
@@ -41,6 +41,6 @@ export const refreshUserController = async (req: Request, res: Response) => {
 		});
 	} catch (error) {
 		console.error('Ошибка рефреша:', error);
-		return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+		return res.status(401).json({ error: 'Невалидный или просроченный токен сессии' });
 	}
 };

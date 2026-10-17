@@ -6,7 +6,7 @@ export const accessTokenCookie = {
 	httpOnly: true,
 	secure: isProduction,
 	sameSite: 'lax' as const,
-	maxAge: timeToMs(process.env.JWT_ACCESS_EXPIRES_IN || '15m'),
+	maxAge: timeToMs(process.env.JWT_ACCESS_EXPIRES_IN || '2m'),
 	path: '/',
 };
 
@@ -14,6 +14,6 @@ export const refreshTokenCookie = {
 	httpOnly: true,
 	secure: isProduction,
 	sameSite: 'lax' as const,
-	maxAge: timeToMs(process.env.JWT_REFRESH_EXPIRES_IN || '30d'),
-	path: '/api/v1/auth/refresh',
+	maxAge: timeToMs(process.env.JWT_REFRESH_EXPIRES_IN || '3m'),
+	path: '/',
 };

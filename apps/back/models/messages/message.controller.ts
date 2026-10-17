@@ -13,6 +13,7 @@ export const createMessageController = async (req: Request, res: Response) => {
 
 	try {
 		const createMessage = await createMessagesService(data);
+		req.app.get('io').to(String(createMessage.chatId)).emit('newMessage', createMessage);
 		res.status(201).json(createMessage);
 	} catch {
 		res.status(500).json({ error: 'Ошибка запроса!' });
